@@ -127,6 +127,9 @@ PJ_DEF(pj_status_t) pjmedia_rtp_encode_rtp( pjmedia_rtp_session *ses,
 					    int payload_len, int ts_len,
 					    const void **rtphdr, int *hdrlen )
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_encode_rtp: pt=%d, m=%d, payload_len=%d",
+           pt, m , payload_len));
     /* Update timestamp */
     ses->out_hdr.ts = pj_htonl(pj_ntohl(ses->out_hdr.ts)+ts_len);
 
@@ -173,6 +176,10 @@ PJ_DEF(pj_status_t) pjmedia_rtp_decode_rtp2(
 					    const void **payload,
 					    unsigned *payloadlen)
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_decode_rtp2: pkt_len=%d",
+               pkt_len));
+    
     int offset;
 
     PJ_UNUSED_ARG(ses);
@@ -233,6 +240,8 @@ PJ_DEF(void) pjmedia_rtp_session_update2( pjmedia_rtp_session *ses,
 					  pjmedia_rtp_status *p_seq_st,
 					  pj_bool_t check_pt)
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_session_update2"));
     pjmedia_rtp_status seq_st;
 
     /* for now check_pt MUST be either PJ_TRUE or PJ_FALSE.
@@ -288,6 +297,8 @@ PJ_DEF(void) pjmedia_rtp_session_update2( pjmedia_rtp_session *ses,
 
 void pjmedia_rtp_seq_restart(pjmedia_rtp_seq_session *sess, pj_uint16_t seq)
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_seq_restart"));
     sess->base_seq = seq;
     sess->max_seq = seq;
     sess->bad_seq = RTP_SEQ_MOD + 1;
@@ -297,6 +308,8 @@ void pjmedia_rtp_seq_restart(pjmedia_rtp_seq_session *sess, pj_uint16_t seq)
 
 void pjmedia_rtp_seq_init(pjmedia_rtp_seq_session *sess, pj_uint16_t seq)
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_seq_init"));
     pjmedia_rtp_seq_restart(sess, seq);
 
     sess->max_seq = (pj_uint16_t) (seq - 1);
@@ -308,6 +321,8 @@ void pjmedia_rtp_seq_update( pjmedia_rtp_seq_session *sess,
 			     pj_uint16_t seq,
 			     pjmedia_rtp_status *seq_status)
 {
+    PJ_LOG(5, (THIS_FILE,
+           "pjmedia_rtp_seq_update"));
     pj_uint16_t udelta = (pj_uint16_t) (seq - sess->max_seq);
     pjmedia_rtp_status st;
     
